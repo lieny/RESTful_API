@@ -1,0 +1,679 @@
+{
+	"info": {
+		"name": "REST_API_Implementation",
+		"_postman_id": "f0defc8d-f45a-8b8e-9828-f21f87d86da8",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add a Boat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"SUCCESS: Add a boat\"] = responseBody.has(\"name\") && responseBody.has(\"id\") && responseBody.has(\"length\") && responseBody.has(\"type\")  && responseBody.has(\"at_sea\");",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"A boat\",\n\"length\": 30,\n\"type\":\"some type\"\n}"
+				},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/boat",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"boat"
+					]
+				},
+				"description": "post to a boat"
+			},
+			"response": []
+		},
+		{
+			"name": "View a List of All Boats",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"var counter = Object.keys(data).length;",
+							"tests[\"SUCCESS: all boats returned\"] = counter == 1;",
+							"",
+							"",
+							"",
+							"var jObj = JSON.parse(responseBody);",
+							"var myBoatCount = jObj.b_list.length;",
+							"pm.globals.set(\"boatCount\", myBoatCount);",
+							"console.log(jObj);",
+							"var boatId = jObj.b_list[0].id;",
+							"pm.globals.set(\"boatId\", boatId);",
+							"console.log(myBoatCount);",
+							"console.log(boatId);",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"B boat\",\n\"length\": 30,\n\"type\":\"B type\"\n}"
+				},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/boat",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"boat"
+					]
+				},
+				"description": "Get All boats"
+			},
+			"response": []
+		},
+		{
+			"name": "View a boat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"var jObj = JSON.parse(responseBody);",
+							"console.log(jObj);",
+							"tests[\"SUCCESS: Boat Content Correct\"] = jObj.name == \"A boat\";",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/boat/{{boatId}}",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"boat",
+						"{{boatId}}"
+					]
+				},
+				"description": "View a Boat"
+			},
+			"response": []
+		},
+		{
+			"name": "Modify a Boat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jObj = JSON.parse(responseBody);",
+							"console.log(jObj);",
+							"tests[\"SUCCESS: Boat Content Correct\"] = jObj.name == \"B Boat\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"B Boat\"}"
+				},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/boat/{{boatId}}",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"boat",
+						"{{boatId}}"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Replace a Boat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jObj = JSON.parse(responseBody);",
+							"console.log(jObj);",
+							"tests[\"SUCCESS: Boat Content Correct\"] = jObj.name == \"C boat\" && jObj.length == 20 && jObj.type == \"other type\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"C boat\",\n\"length\": 20,\n\"type\":\"other type\"\n}"
+				},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/boat/{{boatId}}",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"boat",
+						"{{boatId}}"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Non-existing Boat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/boat/ahxzfnJlc3QtaW1wbGVtZW50YXRpb24tMTgyNzIxchELEgRCb2F0GICAgICAgIAKDA",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"boat",
+						"ahxzfnJlc3QtaW1wbGVtZW50YXRpb24tMTgyNzIxchELEgRCb2F0GICAgICAgIAKDA"
+					]
+				},
+				"description": "Delete a boat"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Boat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Delete a Boat Correct\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/boat/{{boatId}}",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"boat",
+						"{{boatId}}"
+					]
+				},
+				"description": "Delete a boat"
+			},
+			"response": []
+		},
+		{
+			"name": "Replace a Non-existing Boat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"B Boat\"}"
+				},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/boat/ahxzfnJlc3QtaW1wbGVtZW50YXRpb24tMTgyNzIxchELEgRCb2F0GICAgICAgIAKDA",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"boat",
+						"ahxzfnJlc3QtaW1wbGVtZW50YXRpb24tMTgyNzIxchELEgRCb2F0GICAgICAgIAKDA"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Add a Slip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"SUCCESS: Add a Slip\"] = responseBody.has(\"id\") && responseBody.has(\"number\") && responseBody.has(\"current_boat\") && responseBody.has(\"arrival_date\") && responseBody.has(\"self\") && responseCode.code == 200 || responseCode.code == 400;"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"number\":2,\n\t\"current_boat\":\"\",\n\t\"arrival_date\":\"\"\n}"
+				},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/slip",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"slip"
+					]
+				},
+				"description": "post to a slip"
+			},
+			"response": []
+		},
+		{
+			"name": "View a List of All Slips",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var data = JSON.parse(responseBody);",
+							"var counter = Object.keys(data).length;",
+							"tests[\"SUCCESS: all slips returned\"] = counter == 1;",
+							"",
+							"var jObj = JSON.parse(responseBody);",
+							"var mySlipCount = jObj.s_list.length;",
+							"pm.globals.set(\"slipCount\", mySlipCount);",
+							"console.log(jObj);",
+							"var slipId = jObj.s_list[0].id;",
+							"pm.globals.set(\"slipId\", slipId);",
+							"console.log(mySlipCount);",
+							"console.log(slipId);"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"number\":1,\n\t\"current_boat\":\"A\",\n\t\"arrival_date\":\"1-1-2011\"\n}"
+				},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/slip",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"slip"
+					]
+				},
+				"description": "view all slips"
+			},
+			"response": []
+		},
+		{
+			"name": "View a slip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							"var jObj = JSON.parse(responseBody);",
+							"console.log(jObj);",
+							"tests[\"SUCCESS: Boat Content Correct\"] = jObj.number == \"2\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/slip/{{slipId}}",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"slip",
+						"{{slipId}}"
+					]
+				},
+				"description": "view a slip"
+			},
+			"response": []
+		},
+		{
+			"name": "View a Non-existing Slip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/slip/ahxzfnJlc3QtaW1wbGVtZW50YXRpb24tMTgyNzIxchELEgRTbGlwGICAgIDa44YKDA",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"slip",
+						"ahxzfnJlc3QtaW1wbGVtZW50YXRpb24tMTgyNzIxchELEgRTbGlwGICAgIDa44YKDA"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Modify a Slip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jObj = JSON.parse(responseBody);",
+							"console.log(jObj);",
+							"tests[\"SUCCESS: Slip Modification Correct\"] = jObj.arrival_date == \"2-02-2017\";",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"arrival_date\":\"2-02-2017\"\n}"
+				},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/slip/{{slipId}}",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"slip",
+						"{{slipId}}"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Replace a Slip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jObj = JSON.parse(responseBody);",
+							"console.log(jObj);",
+							"tests[\"SUCCESS: Slip Replace Correct\"] = jObj.arrival_date == \"2-02-2017\";",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"current_boat\":\"{{boatId}}\",\n\"arrival_date\":\"2-02-2017\"\n}"
+				},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/slip/{{slipId}}",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"slip",
+						"{{slipId}}"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Non-existing Slip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/slip/ahxzfnJlc3QtaW1wbGVtZW50YXRpb24tMTgyNzIxchELEgRTbGlwGICAgIDa44YKDA",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"slip",
+						"ahxzfnJlc3QtaW1wbGVtZW50YXRpb24tMTgyNzIxchELEgRTbGlwGICAgIDa44YKDA"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Slip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Delete Slip Correct\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://rest-implementation-182721.appspot.com/slip/{{slipId}}",
+					"protocol": "http",
+					"host": [
+						"rest-implementation-182721",
+						"appspot",
+						"com"
+					],
+					"path": [
+						"slip",
+						"{{slipId}}"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
